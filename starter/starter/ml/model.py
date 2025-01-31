@@ -1,7 +1,9 @@
 from sklearn.metrics import fbeta_score, precision_score, recall_score
+from sklearn.svm import SVC
+import xgboost as xgb
+import pickle
+import numpy as np
 
-
-# Optional: implement hyperparameter tuning.
 def train_model(X_train, y_train):
     """
     Trains a machine learning model and returns it.
@@ -18,8 +20,80 @@ def train_model(X_train, y_train):
         Trained machine learning model.
     """
 
-    pass
+    # model = SVC()
+    # model.fit(X_train, y_train)
+    model = xgb.XGBClassifier(objective="binary:logistic")
+    model.fit(X_train, y_train)
+    return model
 
+def save_model(model, model_pth: str, cat_encoder, label_encoder, encoder_pth: str):
+    """Saves model as pickle file given a model and its path
+    
+    Inputs
+    ------
+    model : Union[xgboost.XGBModel, sklearn.svm.SVC]
+        Trained model.
+    model_pth : str
+        Path of pkl file for model to be saved as.
+    cat_encoder : OneHotEncoder
+        Categorical encoder.
+    lb_encoder : LabelEncoder
+        Label encoder.
+    encoder_pth : str
+        Path of pkl file for encoder to be saved as.
+    """
+    with open(model_pth, "wb") as f:
+        pickle.dump(model, f)
+        
+    with open(encoder_pth, "wb") as f:
+        pickle.dump({"cat": cat_encoder, "lb": label_encoder}, f)   
+        
+def load_model(model_pth: str, encoder_pth):
+    """Loads a pickle model given its path
+    
+    Inputs
+    ------
+    model_pth : str
+        Path of pkl file of model.
+        
+    Return
+    ------
+    model : Union[xgboost.XGBModel, sklearn.svm.SVC]
+    cat_encoder : OneHotEncoder
+    lb_encoder : LabelEncoder 
+    """
+    with open(model_pth, 'rb') as f:
+        model = pickle.load(f)
+        
+    with open(encoder_pth, 'rb') as f:
+        encoder = pickle.load(f)
+    return model, encoder["cat"], encoder["lb"]
+
+def compute_slice_metrics(model, train, X_train, y_train, category):
+    """Compute and print metrics for each possible slice of a given category.
+
+    Inputs
+    ------
+    model : Union[xgboost.XGBModel, sklearn.svm.SVC]
+        Trained model.
+    train : pd.DataFrame
+        unprocessed train dataframe.
+    X_train : np.array
+    y_train: np.array
+    category : str
+        Category or column in dataframe for slice
+    """
+    with open("slice_output.txt", "w") as f:
+        for value in train[category].unique():
+            print(category, " = ", value)
+            condition = train[category] == value
+            indices = train.index[condition]
+            filtered_X = X_train[indices]
+            filtered_y = y_train[indices]
+            y_preds = model.predict(filtered_X)
+            precision, recall, fbeta = compute_model_metrics(filtered_y, y_preds)
+            f.write(f"{category} = {value}\n")
+            f.write(f"<< Precision: {precision:.3f} | Recall: {recall:.3f} | fbeta: {fbeta:.3f}>>\n")
 
 def compute_model_metrics(y, preds):
     """
@@ -32,7 +106,7 @@ def compute_model_metrics(y, preds):
     preds : np.array
         Predicted labels, binarized.
     Returns
-    -------
+    ------
     precision : float
     recall : float
     fbeta : float
@@ -48,7 +122,7 @@ def inference(model, X):
 
     Inputs
     ------
-    model : ???
+    model : Union[xgboost.XGBModel, sklearn.svm.SVC]
         Trained machine learning model.
     X : np.array
         Data used for prediction.
@@ -57,4 +131,4 @@ def inference(model, X):
     preds : np.array
         Predictions from the model.
     """
-    pass
+    return model.predict(X)
