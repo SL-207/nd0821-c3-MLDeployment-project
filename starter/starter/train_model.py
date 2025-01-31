@@ -1,4 +1,4 @@
-# Script to train machine learning modelimport pandas as pd
+# Script to train machine learning model
 from ml.data import process_data
 from ml.model import train_model, save_model, load_model, compute_model_metrics, inference
 import numpy as n
@@ -25,7 +25,7 @@ X_train, y_train, encoder, lb = process_data(
     train, categorical_features=cat_features, label="salary", training=True
 )
 
-model_pth = "../model/model3.pkl"
+model_pth = "../model/model.pkl"
 encoder_pth = "../model/encoder.pkl"
 model = train_model(X_train, y_train)
 save_model(model, model_pth, encoder, lb, encoder_pth)

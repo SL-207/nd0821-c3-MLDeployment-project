@@ -1,5 +1,4 @@
 from sklearn.metrics import fbeta_score, precision_score, recall_score
-from sklearn.svm import SVC
 import xgboost as xgb
 import pickle
 import numpy as np
@@ -20,8 +19,6 @@ def train_model(X_train, y_train):
         Trained machine learning model.
     """
 
-    # model = SVC()
-    # model.fit(X_train, y_train)
     model = xgb.XGBClassifier(objective="binary:logistic")
     model.fit(X_train, y_train)
     return model
@@ -31,7 +28,7 @@ def save_model(model, model_pth: str, cat_encoder, label_encoder, encoder_pth: s
     
     Inputs
     ------
-    model : Union[xgboost.XGBModel, sklearn.svm.SVC]
+    model : xgboost.XGBModel
         Trained model.
     model_pth : str
         Path of pkl file for model to be saved as.
@@ -58,7 +55,7 @@ def load_model(model_pth: str, encoder_pth):
         
     Return
     ------
-    model : Union[xgboost.XGBModel, sklearn.svm.SVC]
+    model : xgboost.XGBModel
     cat_encoder : OneHotEncoder
     lb_encoder : LabelEncoder 
     """
@@ -74,7 +71,7 @@ def compute_slice_metrics(model, train, X_train, y_train, category):
 
     Inputs
     ------
-    model : Union[xgboost.XGBModel, sklearn.svm.SVC]
+    model : xgboost.XGBModel
         Trained model.
     train : pd.DataFrame
         unprocessed train dataframe.
@@ -122,7 +119,7 @@ def inference(model, X):
 
     Inputs
     ------
-    model : Union[xgboost.XGBModel, sklearn.svm.SVC]
+    model : xgboost.XGBModel
         Trained machine learning model.
     X : np.array
         Data used for prediction.

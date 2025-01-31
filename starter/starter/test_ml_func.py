@@ -6,7 +6,7 @@ import pytest
 
 @pytest.fixture
 def model_encoder_pth():
-    model_pth = "../model/model3.pkl"
+    model_pth = "../model/model.pkl"
     encoder_pth = "../model/encoder.pkl"
     return model_pth, encoder_pth
 
