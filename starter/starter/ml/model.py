@@ -100,7 +100,8 @@ def compute_slice_metrics(model, train, X_train, y_train, category):
                 filtered_y, y_preds)
             file.write(f"{category} = {value}\n")
             file.write(
-                f"<< Precision: {precision:.3f} | Recall: {recall:.3f} | fbeta: {fbeta:.3f}>>\n")
+                f"Precision: {precision:.3f} | Recall: {recall:.3f} | fbeta: {fbeta:.3f}"
+            )
 
 
 def compute_model_metrics(y, preds):

@@ -1,9 +1,7 @@
 from ml.model import load_model, inference, compute_model_metrics
 from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
 import xgboost as xgb
-from train_model import proj_root, model_pth, encoder_pth, X_train, y_train
-import pytest
-import os
+from train_model import model_pth, encoder_pth, X_train, y_train
 
 
 def test_load_model():

@@ -33,7 +33,7 @@ async def greeting():
 @app.post("/inference")
 async def make_inference(data: ModelInput):
     data_dict = data.dict()
-    data_dict = {key.replace("_","-"): val for key, val in data_dict.items()}
+    data_dict = {key.replace("_", "-"): val for key, val in data_dict.items()}
     df = pd.DataFrame([data_dict])
     X, _, _, _ = process_data(df,
                               categorical_features=cat_features,

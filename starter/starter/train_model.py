@@ -1,7 +1,6 @@
 # Script to train machine learning model
 from ml.data import process_data
 from ml.model import train_model, save_model, load_model, compute_model_metrics, inference
-import numpy as n
 import pandas as pd
 import os
 
