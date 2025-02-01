@@ -1,7 +1,8 @@
+import pickle
 from sklearn.metrics import fbeta_score, precision_score, recall_score
 import xgboost as xgb
-import pickle
 import numpy as np
+
 
 def train_model(X_train, y_train):
     """
@@ -23,9 +24,15 @@ def train_model(X_train, y_train):
     model.fit(X_train, y_train)
     return model
 
-def save_model(model, model_pth: str, cat_encoder, label_encoder, encoder_pth: str):
+
+def save_model(
+        model,
+        model_pth: str,
+        cat_encoder,
+        label_encoder,
+        encoder_pth: str):
     """Saves model as pickle file given a model and its path
-    
+
     Inputs
     ------
     model : xgboost.XGBModel
@@ -39,32 +46,34 @@ def save_model(model, model_pth: str, cat_encoder, label_encoder, encoder_pth: s
     encoder_pth : str
         Path of pkl file for encoder to be saved as.
     """
-    with open(model_pth, "wb") as f:
-        pickle.dump(model, f)
-        
-    with open(encoder_pth, "wb") as f:
-        pickle.dump({"cat": cat_encoder, "lb": label_encoder}, f)   
-        
+    with open(model_pth, "wb") as file:
+        pickle.dump(model, file)
+
+    with open(encoder_pth, "wb") as file:
+        pickle.dump({"cat": cat_encoder, "lb": label_encoder}, file)
+
+
 def load_model(model_pth: str, encoder_pth):
     """Loads a pickle model given its path
-    
+
     Inputs
     ------
     model_pth : str
         Path of pkl file of model.
-        
+
     Return
     ------
     model : xgboost.XGBModel
     cat_encoder : OneHotEncoder
-    lb_encoder : LabelEncoder 
+    lb_encoder : LabelEncoder
     """
-    with open(model_pth, 'rb') as f:
-        model = pickle.load(f)
-        
-    with open(encoder_pth, 'rb') as f:
-        encoder = pickle.load(f)
+    with open(model_pth, 'rb') as file:
+        model = pickle.load(file)
+
+    with open(encoder_pth, 'rb') as file:
+        encoder = pickle.load(file)
     return model, encoder["cat"], encoder["lb"]
+
 
 def compute_slice_metrics(model, train, X_train, y_train, category):
     """Compute and print metrics for each possible slice of a given category.
@@ -80,17 +89,20 @@ def compute_slice_metrics(model, train, X_train, y_train, category):
     category : str
         Category or column in dataframe for slice
     """
-    with open("slice_output.txt", "w") as f:
+    with open("slice_output.txt", "w") as file:
         for value in train[category].unique():
             print(category, " = ", value)
             condition = train[category] == value
             indices = train.index[condition]
-            filtered_X = X_train[indices]
+            filtered_x = X_train[indices]
             filtered_y = y_train[indices]
-            y_preds = model.predict(filtered_X)
-            precision, recall, fbeta = compute_model_metrics(filtered_y, y_preds)
-            f.write(f"{category} = {value}\n")
-            f.write(f"<< Precision: {precision:.3f} | Recall: {recall:.3f} | fbeta: {fbeta:.3f}>>\n")
+            y_preds = model.predict(filtered_x)
+            precision, recall, fbeta = compute_model_metrics(
+                filtered_y, y_preds)
+            file.write(f"{category} = {value}\n")
+            file.write(
+                f"<< Precision: {precision:.3f} | Recall: {recall:.3f} | fbeta: {fbeta:.3f}>>\n")
+
 
 def compute_model_metrics(y, preds):
     """
