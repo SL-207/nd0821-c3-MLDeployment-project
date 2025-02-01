@@ -11,6 +11,7 @@ from sklearn.model_selection import train_test_split
 current_dir = os.path.dirname(os.path.abspath(__file__))
 proj_root = os.path.abspath(os.path.join(current_dir, "..", ".."))
 data_pth = os.path.join(proj_root, "starter", "data", "census.csv")
+
 data = pd.read_csv(data_pth)
 
 train, test = train_test_split(data, test_size=0.20)
@@ -29,8 +30,8 @@ X_train, y_train, encoder, lb = process_data(
     train, categorical_features=cat_features, label="salary", training=True
 )
 
-model_pth = "../model/model.pkl"
-encoder_pth = "../model/encoder.pkl"
+model_pth = os.path.join(proj_root, "starter", "model", "model.pkl")
+encoder_pth = os.path.join(proj_root, "starter", "model", "encoder.pkl")
 model = train_model(X_train, y_train)
 save_model(model, model_pth, encoder, lb, encoder_pth)
 loaded_model, encoder, lb = load_model(model_pth, encoder_pth)
