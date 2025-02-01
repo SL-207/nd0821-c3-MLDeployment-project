@@ -25,7 +25,7 @@ jobs:
           pip install flake8 pytest
 
       - name: Run Pytest
-        run: python -m pytest starter/starter
+        run: python -m pytest starter/starter/test_ml_func.py
 
       - name: Run Flake8
         run: flake8 .

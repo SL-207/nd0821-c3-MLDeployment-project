@@ -1,14 +1,15 @@
 from ml.model import load_model, inference, compute_model_metrics
 from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
 import xgboost as xgb
-from train_model import X_train, y_train
+from train_model import proj_root, X_train, y_train
 import pytest
+import os
 
 
 @pytest.fixture
 def model_encoder_pth():
-    model_pth = "../model/model.pkl"
-    encoder_pth = "../model/encoder.pkl"
+    model_pth = os.path.join(proj_root, "starter", "model", "model.pkl")
+    encoder_pth = os.path.join(proj_root, "starter", "model", "encoder.pkl")
     return model_pth, encoder_pth
 
 
