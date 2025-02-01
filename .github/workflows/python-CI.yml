@@ -24,8 +24,8 @@ jobs:
           pip install -r requirements.txt
           pip install flake8 pytest
 
-      - name: Run Flake8
-        run: flake8 .
-
       - name: Run Pytest
         run: python -m pytest starter/starter
+
+      - name: Run Flake8
+        run: flake8 .
