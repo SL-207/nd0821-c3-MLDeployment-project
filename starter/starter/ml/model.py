@@ -88,9 +88,9 @@ def compute_slice_metrics(model, train, X_train, y_train, category):
     category : str
         Category or column in dataframe for slice
     """
+    train.reset_index(drop=True, inplace=True)
     with open("slice_output.txt", "w") as file:
         for value in train[category].unique():
-            print(category, " = ", value)
             condition = train[category] == value
             indices = train.index[condition]
             filtered_x = X_train[indices]
@@ -100,7 +100,7 @@ def compute_slice_metrics(model, train, X_train, y_train, category):
                 filtered_y, y_preds)
             file.write(f"{category} = {value}\n")
             file.write(
-                f"Precision: {precision:.3f} | Recall: {recall:.3f} | fbeta: {fbeta:.3f}"
+                f"Precision: {precision:.3f} | Recall: {recall:.3f} | fbeta: {fbeta:.3f}\n\n"
             )
 
 
