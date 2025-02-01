@@ -5,11 +5,14 @@ from main import app
 
 client = TestClient(app)
 
+
 def test_greeting():
     r = client.get("/")
     assert r.status_code == 200
-    assert r.json() == {"greeting": "Greetings! The following app makes predictions on income range based on demographic and census-related factors"}
-    
+    assert r.json() == {
+        "greeting": "Greetings! The following app makes predictions on income range based on demographic and census-related factors"}
+
+
 def test_inference_under_fifty():
     data = json.dumps({
         "age": 39,
@@ -30,7 +33,8 @@ def test_inference_under_fifty():
     r = client.post("/inference", data=data)
     assert r.status_code == 200
     assert r.json() == {"output": "Salary is less than or equal to 50k"}
-    
+
+
 def test_inference_over_fifty():
     data = json.dumps({
         "age": 43,

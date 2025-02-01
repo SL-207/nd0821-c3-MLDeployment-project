@@ -1,7 +1,6 @@
 import pickle
 from sklearn.metrics import fbeta_score, precision_score, recall_score
 import xgboost as xgb
-import numpy as np
 
 
 def train_model(X_train, y_train):
