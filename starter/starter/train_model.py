@@ -31,8 +31,8 @@ X_train, y_train, encoder, lb = process_data(
 
 model_pth = os.path.join(proj_root, "starter", "model", "model.pkl")
 encoder_pth = os.path.join(proj_root, "starter", "model", "encoder.pkl")
-# model = train_model(X_train, y_train)
-# save_model(model, model_pth, encoder, lb, encoder_pth)
+model = train_model(X_train, y_train)
+save_model(model, model_pth, encoder, lb, encoder_pth)
 loaded_model, encoder, lb = load_model(model_pth, encoder_pth)
 y_preds = inference(loaded_model, X_train)
 precision, recall, fbeta = compute_model_metrics(y_train, y_preds)
