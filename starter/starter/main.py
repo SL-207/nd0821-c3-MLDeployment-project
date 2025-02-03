@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 import pandas as pd
 from starter.starter.ml.data import process_data
-from train_model import cat_features, encoder, lb, loaded_model
+from starter.starter.train_model import cat_features, encoder, lb, loaded_model
 
 
 class ModelInput(BaseModel):
