@@ -1,7 +1,7 @@
-from ml.model import load_model, inference, compute_model_metrics
+from starter.starter.ml.model import load_model, inference, compute_model_metrics
 from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
 import xgboost as xgb
-from train_model import model_pth, encoder_pth, X_train, y_train
+from starter.starter.train_model import model_pth, encoder_pth, X_train, y_train
 
 
 def test_load_model():

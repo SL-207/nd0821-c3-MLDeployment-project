@@ -1,11 +1,10 @@
 # Script to train machine learning model
-from ml.data import process_data
-from ml.model import train_model, save_model, load_model, compute_slice_metrics, compute_model_metrics, inference
+from starter.starter.ml.data import process_data
+from starter.starter.ml.model import train_model, save_model, load_model, compute_slice_metrics, compute_model_metrics, inference
 import pandas as pd
 import os
 
 from sklearn.model_selection import train_test_split
-
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 proj_root = os.path.abspath(os.path.join(current_dir, "..", ".."))
